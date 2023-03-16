@@ -3,7 +3,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3000;
+const port = 8080 || process.env.PORT;
 
 app.use(bodyParser.json());
 
