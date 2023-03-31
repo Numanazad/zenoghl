@@ -329,19 +329,20 @@ app.post("/gettoken", async (req, res) => {
 
     if (getGuest_result.guests.length == 0) {
 
-      const create_guest_data = await createGuest(req.body);
-      const new_user_create_service = await guest_create_service(req.body, create_guest_data.id);
-      console.log("inside new user create service: ", new_user_create_service);
+        console.log("inside new user create service: ", new_user_create_service);
+        const create_guest_data = await createGuest(req.body);
+        const new_user_create_service = await guest_create_service(req.body, create_guest_data.id);
+      
     }else {
 
-      const guest_service_booking_result = await guest_create_service(req.body, getGuest_result.guests[0].id);
-      console.log("inside already user create service: ",guest_service_booking_result);
+        console.log("inside already user create service: ",guest_service_booking_result);
+        const guest_service_booking_result = await guest_create_service(req.body, getGuest_result.guests[0].id);
 
     }
     res.json({"status":"success"});
-  } catch (error) {
-    console.error("API error gettoken: ",error);
-  }
+    } catch (error) {
+        console.error("API error gettoken: ",error);
+        }
 });
 
 app.listen(port, () => {
