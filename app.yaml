@@ -1,5 +1,5 @@
 runtime: nodejs18
-service: default
+service: my-nodejs-app
 instance_class: F2
 
 automatic_scaling:
