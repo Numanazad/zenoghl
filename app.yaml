@@ -1,0 +1,8 @@
+runtime: nodejs16
+service: YOUR_SERVICE_NAME
+env_variables:
+  KEY1: VALUE1
+  KEY2: VALUE2
+
+automatic_scaling:
+  target_cpu_utilization: 0.65
