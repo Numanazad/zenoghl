@@ -9,6 +9,7 @@ const port = 8080 || process.env.PORT;
 var tokenglobal;
 
 const gettoken = async (userData) => {
+  console.log("inside gettoken");
   const tokenurl = "https://api.zenoti.com/v1/tokens";
   try {
     const response = await axios.post(tokenurl,
@@ -322,11 +323,12 @@ app.post("/gettoken", async (req, res) => {
   try {
     //get access token
     const token = await gettoken(req.body);
+    console.log("token", token);
     const tokenvalue = token.credentials.access_token;
     tokenglobal = tokenvalue;
     //check if already exits:
     const getGuest_result = await getGuestData(req.body);
-
+    console.log("getGuest", getGuest_result);
     if (getGuest_result.guests.length == 0) {
 
         console.log("inside new user create service: ", new_user_create_service);
@@ -335,9 +337,8 @@ app.post("/gettoken", async (req, res) => {
       
     }else {
 
-        console.log("inside already user create service: ",guest_service_booking_result);
         const guest_service_booking_result = await guest_create_service(req.body, getGuest_result.guests[0].id);
-
+        console.log("inside already user create service: ",guest_service_booking_result);
     }
     res.json({"status":"success"});
     } catch (error) {
