@@ -14,13 +14,13 @@ const gettoken = async (userData) => {
   try {
     const response = await axios.post(tokenurl,
       {
-        account_name: userData.account_name,
-        user_name: userData.user_name,
-        password: userData.password,
-        grant_type: userData.grant_type,
-        app_id: userData.app_id,
-        app_secret: userData.app_secret,
-        device_id: userData.device_id
+        account_name: "ivnutritionnow",
+        user_name: "justin@ivlaunch.com",
+        password: "Klint1234!",
+        grant_type: "password",
+        app_id: "6D82F90E-BEB7-4C62-ADE3-7E0FA0EB1E82",
+        app_secret: "e24d8fcb53cf40999a9a93baa72e94624b6199a6775246c990985b8f979a3337",
+        device_id: "c113476f-04e1-484c-b887-57414441cdcf"
       }
       );
     return response.data;
@@ -30,14 +30,14 @@ const gettoken = async (userData) => {
 };
 
 const getGuestData = async (databody)=>{
-  console.log("inside get_guest");
+  console.log("inside getGuestData");
   try {
     const getguestresult = await axios.get(
       "https://api.zenoti.com/v1/guests/search",
       {
         params:{
-          center_id:databody.center_id,
-          user_name:databody.personal_info.user_name
+          center_id:"8a2c0318-d605-481c-b100-e32e77104b66",
+          user_name:"testing@gmail.com"
         },
         headers:{
           Authorization: `Bearer ${tokenglobal}`,
@@ -53,7 +53,7 @@ const getGuestData = async (databody)=>{
 
 const createGuest = async (bodydata)=>{
   // check if user already exists:
-  console.log("inside createguest");
+  console.log("inside createGuest");
   try {
     const guestdata = await axios.post(
       "https://api.zenoti.com/v1/guests",
@@ -123,24 +123,25 @@ const createGuest = async (bodydata)=>{
 // }
 
 const createservicebooking = async (bodydata, guestId)=>{
+  console.log("inside createservicebooking");
   const createservicebookingurl = "https://api.zenoti.com/v1/bookings";
   try {
     const createservicebookingresponse = await axios.post(
       createservicebookingurl, 
       {
-        is_only_catalog_employees: bodydata.is_only_catalog_employees, 
-        center_id: bodydata.center_id, 
+        is_only_catalog_employees: false, 
+        center_id: "8a2c0318-d605-481c-b100-e32e77104b66", 
         date:bodydata.date,
         guests:[
           {
             items:[
               {
                 item:{
-                  id: bodydata.guests[0].items[0].item.id
+                  id: "8f28daa6-f881-4ee6-ab29-e9518bc709fb"
                 }, 
                 therapist:{
-                  id: bodydata.guests[0].items[0].therapist.id,
-                  gender: bodydata.guests[0].items[0].therapist.gender
+                  id:  "d2887e76-f641-4630-90e4-f430927f3115",
+                  gender: "0"
                 }
               }
             ],
@@ -166,6 +167,7 @@ const createservicebooking = async (bodydata, guestId)=>{
 }
 
 const createservicebooking_via_future = async (bodydata, formaltokenvalue, new_available_date_via_future)=>{
+  console.log("inside createservicebooking_via_future");
   const createservicebookingurl = "https://api.zenoti.com/v1/bookings";
   try {
     const createservicebookingresponse = await axios.post(
@@ -209,6 +211,7 @@ const createservicebooking_via_future = async (bodydata, formaltokenvalue, new_a
 }
 
 const get_slots = async (slot_free_url)=>{
+  console.log("inside get_slots");
   try {
     const get_slots_response = await axios.get(
       slot_free_url,
@@ -232,6 +235,7 @@ const get_slots = async (slot_free_url)=>{
 
 const reserve_slot = async (time, booking_id_from_retrieve_slot)=>{
   try {
+    console.log("inside reserve_slot");
     console.log("reserve_slot_time: ", time);
     const slot_reserve_url = `https://api.zenoti.com/v1/bookings/${booking_id_from_retrieve_slot}/slots/reserve`;
     const slot_reserve_response = await axios.post(slot_reserve_url,
@@ -253,7 +257,7 @@ const reserve_slot = async (time, booking_id_from_retrieve_slot)=>{
 }
 
 const confirm_reserve_slot = async (bookingId) => {
-  console.log("inside confirm");
+  console.log("inside confirm_reserve_slot");
 	try {
 		const confirm_reserve_data = await axios
 			.post(
@@ -274,14 +278,13 @@ const confirm_reserve_slot = async (bookingId) => {
 };
 
 const retrieve_available_slots_url_function = async (retrieve_available_slots_url, bodydata, bookingId)=>{
+  console.log("inside retrieve_available_slots_url_function");
   let user_selected_date = bodydata.date;
   let available_date_time_result;
   const available_slots = await get_slots(retrieve_available_slots_url);
     if(available_slots.Error == null){
       if(available_slots.slots.length>0){
         const selectedSlot = available_slots.slots.find(slot=>{
-          console.log(slot);
-          console.log(user_selected_date);
             return slot.Time>=user_selected_date;
         });
         console.log("selectedSlot: ", selectedSlot);
@@ -310,9 +313,9 @@ const retrieve_available_slots_url_function = async (retrieve_available_slots_ur
 }
 
 const guest_create_service = async (bodydata, guest_id)=>{
+  console.log("inside guest_create_service");
   const createservice_response = await createservicebooking(bodydata, guest_id);
   const booking_id = createservice_response.id;
-
   //retrieve available slots for appointment
   const retrieve_available_slots_url = `https://api.zenoti.com/v1/bookings/${booking_id}/slots`;
   const slot_reserve_response = await retrieve_available_slots_url_function(retrieve_available_slots_url, bodydata, booking_id);
@@ -323,22 +326,16 @@ app.post("/gettoken", async (req, res) => {
   try {
     //get access token
     const token = await gettoken(req.body);
-    console.log("token", token);
     const tokenvalue = token.credentials.access_token;
     tokenglobal = tokenvalue;
     //check if already exits:
     const getGuest_result = await getGuestData(req.body);
-    console.log("getGuest", getGuest_result);
     if (getGuest_result.guests.length == 0) {
-
-        console.log("inside new user create service: ", new_user_create_service);
-        const create_guest_data = await createGuest(req.body);
-        const new_user_create_service = await guest_create_service(req.body, create_guest_data.id);
-      
+      const create_guest_data = await createGuest(req.body);
+      const new_user_create_service = await guest_create_service(req.body, create_guest_data.id);
+      //console.log(new_user_create_service);
     }else {
-
-        const guest_service_booking_result = await guest_create_service(req.body, getGuest_result.guests[0].id);
-        console.log("inside already user create service: ",guest_service_booking_result);
+      const guest_service_booking_result = await guest_create_service(req.body, getGuest_result.guests[0].id);
     }
     res.json({"status":"success"});
     } catch (error) {
@@ -349,4 +346,3 @@ app.post("/gettoken", async (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
   });
-  
