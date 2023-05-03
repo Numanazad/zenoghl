@@ -166,30 +166,30 @@ const createservicebooking = async (bodydata, guestId)=>{
   }
 }
 
-const createservicebooking_via_future = async (bodydata, formaltokenvalue, new_available_date_via_future)=>{
+const createservicebooking_via_future = async (bodydata, formaltokenvalue, new_available_date_via_future, guest_id)=>{
   console.log("inside createservicebooking_via_future");
   const createservicebookingurl = "https://api.zenoti.com/v1/bookings";
   try {
     const createservicebookingresponse = await axios.post(
       createservicebookingurl, 
       {
-        is_only_catalog_employees: bodydata.is_only_catalog_employees, 
-        center_id: bodydata.center_id, 
+        is_only_catalog_employees: false, 
+        center_id: "8a2c0318-d605-481c-b100-e32e77104b66", 
         date:new_available_date_via_future,
         guests:[
           {
             items:[
               {
                 item:{
-                  id: bodydata.guests[0].items[0].item.id
+                  id: "8f28daa6-f881-4ee6-ab29-e9518bc709fb"
                 }, 
                 therapist:{
-                  id: bodydata.guests[0].items[0].therapist.id,
-                  gender: bodydata.guests[0].items[0].therapist.gender
+                  id: "d2887e76-f641-4630-90e4-f430927f3115",
+                  gender: "0"
                 }
               }
             ],
-            id: bodydata.guests[0].id
+            id: guest_id
           }
         ],
       },
@@ -277,7 +277,7 @@ const confirm_reserve_slot = async (bookingId) => {
 	}
 };
 
-const retrieve_available_slots_url_function = async (retrieve_available_slots_url, bodydata, bookingId)=>{
+const retrieve_available_slots_url_function = async (retrieve_available_slots_url, bodydata, bookingId, guest_id)=>{
   console.log("inside retrieve_available_slots_url_function");
   let user_selected_date = bodydata.date;
   let available_date_time_result;
@@ -301,7 +301,7 @@ const retrieve_available_slots_url_function = async (retrieve_available_slots_ur
         //find the next available slot.
         const next_available_day_data = available_slots.next_available_day;
         //send the request all over again with the next_available_day_data.
-        const create_service_response_via_future = await createservicebooking_via_future(bodydata, tokenglobal, next_available_day_data);
+        const create_service_response_via_future = await createservicebooking_via_future(bodydata, tokenglobal, next_available_day_data, guest_id);
         const booking_id_via_future = create_service_response_via_future.id;
         const retrieve_available_slots_url_via_future = `https://api.zenoti.com/v1/bookings/${booking_id_via_future}/slots`;
         await retrieve_available_slots_url_function(retrieve_available_slots_url_via_future,bodydata, bookingId);
@@ -318,7 +318,7 @@ const guest_create_service = async (bodydata, guest_id)=>{
   const booking_id = createservice_response.id;
   //retrieve available slots for appointment
   const retrieve_available_slots_url = `https://api.zenoti.com/v1/bookings/${booking_id}/slots`;
-  const slot_reserve_response = await retrieve_available_slots_url_function(retrieve_available_slots_url, bodydata, booking_id);
+  const slot_reserve_response = await retrieve_available_slots_url_function(retrieve_available_slots_url, bodydata, booking_id, guest_id);
   return slot_reserve_response;
 }
 
