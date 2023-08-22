@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 require("dotenv").config();
 const app = express();
 app.use(bodyParser.json());
-const port = 8080 || process.env.PORT;
+const port = process.env.PORT;
 
 var tokenglobal;
 
