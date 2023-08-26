@@ -16,7 +16,7 @@ const gettoken = async (userData) => {
       {
         account_name: "ivnutritionnow",
         user_name: "justin@ivlaunch.com",
-        password: "Klint1234!",
+        password: "Password123!",
         grant_type: "password",
         app_id: "6D82F90E-BEB7-4C62-ADE3-7E0FA0EB1E82",
         app_secret: "e24d8fcb53cf40999a9a93baa72e94624b6199a6775246c990985b8f979a3337",
@@ -322,7 +322,7 @@ const guest_create_service = async (bodydata, guest_id)=>{
   return slot_reserve_response;
 }
 
-app.post("/gettoken", async (req, res) => { 
+app.post("/gettoken", async (req, res) => {
   try {
     //get access token
     const token = await gettoken(req.body);
