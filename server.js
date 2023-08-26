@@ -21,7 +21,7 @@ const gettoken = async (userData) => {
         app_id: "6D82F90E-BEB7-4C62-ADE3-7E0FA0EB1E82",
         app_secret: "e24d8fcb53cf40999a9a93baa72e94624b6199a6775246c990985b8f979a3337",
         device_id: "c113476f-04e1-484c-b887-57414441cdcf", 
-        date: userData.date
+        date: "2023-08-29T10:00:00"
       }
       );
     return response.data;
@@ -132,7 +132,7 @@ const createservicebooking = async (bodydata, guestId)=>{
       {
         is_only_catalog_employees: false, 
         center_id: "8a2c0318-d605-481c-b100-e32e77104b66", 
-        date:bodydata.date,
+        date:"2023-08-29T10:00:00",
         guests:[
           {
             items:[
