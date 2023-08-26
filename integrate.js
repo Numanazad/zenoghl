@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 require("dotenv").config();
 const app = express();
 app.use(bodyParser.json());
-const port = process.env.PORT || 8080;
+const port = process.env.PORT;
 
 var tokenglobal;
 
@@ -343,6 +343,10 @@ app.post("/gettoken", async (req, res) => {
         console.error("API error gettoken: ",error);
         }
 });
+
+app.get("/", async (req,res) =>{
+  res.send("hello zenoti");
+})
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
