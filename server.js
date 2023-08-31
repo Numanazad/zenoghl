@@ -325,6 +325,7 @@ const guest_create_service = async (bodydata, guest_id)=>{
 
 app.post("/gettoken", async (req, res) => {
   try {
+    console.log("body: ", req.body);
     //get access token
     const token = await gettoken(req.body);
     const tokenvalue = token.credentials.access_token;
