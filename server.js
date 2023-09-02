@@ -227,7 +227,7 @@ const get_slots = async (slot_free_url)=>{
         }
       }
     );
-    console.log("get_slots_response: ", get_slots_response);
+    console.log("get_slots_response: ", get_slots_response.data);
     //console.log(get_slots_response.data);
     return get_slots_response.data;
   } catch (error) {
