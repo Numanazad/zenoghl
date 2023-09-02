@@ -281,7 +281,7 @@ const confirm_reserve_slot = async (bookingId) => {
 
 const retrieve_available_slots_url_function = async (retrieve_available_slots_url, bodydata, bookingId, guest_id)=>{
   console.log("inside retrieve_available_slots_url_function");
-  let user_selected_date = bodydata.date;
+  let user_selected_date = bodydata.calendar.startTime;
   let available_date_time_result;
   const available_slots = await get_slots(retrieve_available_slots_url);
     if(available_slots.Error == null){
