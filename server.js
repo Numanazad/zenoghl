@@ -212,7 +212,7 @@ const createservicebooking_via_future = async (bodydata, formaltokenvalue, new_a
 }
 
 const get_slots = async (slot_free_url)=>{
-  console.log("inside get_slots");
+  console.log("inside get_slots", slot_free_url);
   try {
     const get_slots_response = await axios.get(
       slot_free_url,
